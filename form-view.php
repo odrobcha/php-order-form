@@ -48,21 +48,37 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" class="form-control" value="<?php echo $_POST['street'] ?? '' ?>"/>
+                    <input type="text"
+                           name="street"
+                           id="street"
+                           class="form-control"
+                           value="<?php echo $_POST['street'] ?? '' ?>"/>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?php echo $_POST['streetnumber'] ?? '' ?>"/>
+                    <input type="text"
+                           id="streetnumber"
+                           name="streetnumber"
+                           class="form-control"
+                           value="<?php echo $_POST['streetnumber'] ?? '' ?>"/>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city" class="form-control" value="<?php echo $_POST['city'] ?? '' ?>"/>
+                    <input type="text"
+                           id="city"
+                           name="city"
+                           class="form-control"
+                           value="<?php echo $_POST['city'] ?? '' ?>"/>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?php echo $_POST['zipcode'] ?? '' ?> "/>
+                    <input type="text"
+                           id="zipcode"
+                           name="zipcode"
+                           class="form-control"
+                           value="<?php echo $_POST['zipcode'] ?? '' ?> "/>
                 </div>
             </div>
         </fieldset>
@@ -72,8 +88,13 @@
             <?php foreach ($products as $i => $product): ?>
                 <label>
                     <?php // <?p= is equal to <?php echo ?>
-                    <input type="checkbox" value="1" name="products[<?php echo $i ?>]" <?php echo isset($_POST['products'][$i]) ? 'checked ':''; ?>/> <?php echo $product['name'] ?> -
-                    &euro; <?php echo number_format($product['price'], 2) ?></label><br />
+                    <input type="checkbox"
+                           value="1"
+                           name="products[<?php echo $i ?>]"
+                        <?php echo isset($_POST['products'][$i]) ? 'checked ':''; ?>/>
+                    <?php echo $product['name'] ?> - &euro; <?php echo number_format($product['price'], 2) ?>
+                </label>
+                <br />
             <?php endforeach; ?>
         </fieldset>
 

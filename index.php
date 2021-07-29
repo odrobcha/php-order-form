@@ -33,20 +33,16 @@ $products = [
     ['name' => 'Coffee', 'price' => 3.5],
     ['name' => 'Iced Coffee', 'price' => 4],
     ['name' => 'Irish Coffee', 'price' => 6],
-
 ];
-
-$totalValue = 0;
+$totalValue = 0.00;
 
 function validate(): array
 {
     $errors = [];
-
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $_POST['email'] = '';
         array_push($errors, 'Please, check your email address');
     }
-
     if ($_POST['street'] == ''){
         $_POST['street'] = '';
         array_push($errors, 'Street field can not be empty');
@@ -63,29 +59,18 @@ function validate(): array
         $_POST['zipcode'] = '';
         array_push($errors, 'Zip code field can not be empty and has to be a number');
     }
-
     // This function will send a list of invalid fields back
     return $errors;
 }
 
-/**
- * @return string
- */
 function handleForm($productsList): string
 {
-
-
     // Validation (step 2)
     $invalidFields = validate();
-    if ($invalidFields) {
+    if (!empty($invalidFields)) {
         return '<div class="alert alert-danger">' . implode(" </br> ", $invalidFields) .'</div>';
-    } else {
-        // TODO: handle successful submission
     }
-
-
     // TODO: form related tasks (step 1)
-
 
     $chosenProduct = $_POST[products];
     $orderList = [];
@@ -99,7 +84,7 @@ function handleForm($productsList): string
             Your order is sumbited </br> Your address is:' .$_POST[street] . ' ' .$_POST[streetnumber] . ' ' . ' ' .$_POST[city]
             .'</br>Your email is: ' .$_POST[email]
             .'</br> You have chosen: ' .implode(" , ", $orderList)
-            .'</br> The total Price is: ' .$totalPrice .' euro'
+            .'</br> The total price is: &euro;' .number_format($totalPrice, 2)
             .'</div>';
 }
 
