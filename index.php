@@ -40,59 +40,74 @@ $totalValue = 0;
 
 function validate(): array
 {
+    $errors = [];
+
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        $_POST['email'] = '';
+        array_push($errors, 'Please, check your email address');
+    }
+
+    if ($_POST['street'] == ''){
+        $_POST['street'] = '';
+        array_push($errors, 'Street field can not be empty');
+    }
+    if ($_POST['city'] == ''){
+        $_POST['city'] = '';
+        array_push($errors, 'City field can not be empty');
+    }
+    if (($_POST['streetnumber'] == '') || !(is_numeric(($_POST['streetnumber'])))){
+        $_POST['streetnumber'] = '';
+        array_push($errors, 'Street number field can not be empty and has to be a number');
+    }
+    if (($_POST['zipcode'] == '')|| !(is_numeric(($_POST['zipcode'])))){
+        $_POST['zipcode'] = '';
+        array_push($errors, 'Zip code field can not be empty and has to be a number');
+    }
+
     // This function will send a list of invalid fields back
-    return [];
+    return $errors;
 }
 
 /**
  * @return string
  */
-function handleForm(): string
+function handleForm($productsList): string
 {
-    $products = [
-        ['name' => 'Fanta', 'price' => 2.5],
-        ['name' => 'Coca Cola', 'price' => 2.5],
-        ['name' => 'Black tea', 'price' => 3],
-        ['name' => 'Coffee', 'price' => 3.5],
-        ['name' => 'Iced Coffee', 'price' => 4],
-        ['name' => 'Irish Coffee', 'price' => 6],
 
-    ];
 
     // Validation (step 2)
     $invalidFields = validate();
-    if (!empty($invalidFields)) {
-        // TODO: handle errors
+    if ($invalidFields) {
+        return '<div class="alert alert-danger">' . implode(" </br> ", $invalidFields) .'</div>';
     } else {
         // TODO: handle successful submission
     }
+
+
     // TODO: form related tasks (step 1)
+
+
     $chosenProduct = $_POST[products];
     $orderList = [];
-    $totalPrice = 0;
 
-    foreach($chosenProduct as $i => $product) {
-        $totalPrice +=$products[$i][price];
-
-        array_push($orderList, $products[$i][name]);
-
+    foreach($chosenProduct as $productNumber => $product) {
+        $totalPrice +=$productsList[$productNumber][price];
+        array_push($orderList, $productsList[$productNumber][name]);
     }
 
-
     return ' <div class="alert alert-success"> 
-            Your orderd is sumbited </br> Your address is:' .$_POST[street] . ' ' .$_POST[streetnumber] . ' ' . ' ' .$_POST[city]
+            Your order is sumbited </br> Your address is:' .$_POST[street] . ' ' .$_POST[streetnumber] . ' ' . ' ' .$_POST[city]
             .'</br>Your email is: ' .$_POST[email]
             .'</br> You have chosen: ' .implode(" , ", $orderList)
             .'</br> The total Price is: ' .$totalPrice .' euro'
-        //.$products[0][name]
-        .'</div>';
+            .'</div>';
 }
 
 // TODO: replace this if by an actual check
-$formSubmitted = (!empty($_POST));
+
 $confirmationMessage = "";
-if ($formSubmitted) {
-    $confirmationMessage = handleForm();
+if (!empty($_POST)) {
+    $confirmationMessage = handleForm($products);
 }
 
 require 'form-view.php';
