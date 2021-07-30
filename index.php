@@ -23,6 +23,7 @@ if(!empty($_GET)){
 
 $order = $_GET['order'] ?? 'drinks';
 $deliveryTime = $_POST['deliveryTime'] ?? '2.5';
+
 // Use this function when you need to need an overview of these variables
 function whatIsHappening() {
     echo '<h2>$_GET</h2>';
@@ -176,6 +177,14 @@ function getMostPopularItem(){
 
 
 };
+
+function activePage($activePage){
+    global $order;
+    if ($activePage == $order){
+        return ' ' .$activePage;
+    }
+
+}
 require 'form-view.php';
 //test
 $arr = [];

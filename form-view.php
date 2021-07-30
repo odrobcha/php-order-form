@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css"
           rel="stylesheet"/>
+    <link href = styles.css rel="stylesheet"/>
     <title>Your fancy store</title>
 </head>
 <body>
@@ -24,15 +25,15 @@
         <nav>
             <ul class="nav">
                  <li class="nav-item">
-                    <a class="nav-link  active" href="index.php?order=drinks">Order drinks</a>
+                    <a class="nav-link ' . ($order == 'drinks' ? 'btn btn-primary' : "")  .' " href="index.php?order=drinks">Order drinks</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?order=food">Order food</a>
+                    <a class="nav-link '. ($order == 'food' ? 'btn btn-primary' : "") .' " href="index.php?order=food">Order food</a>
                 </li>
                 
             </ul>
         </nav>
-    '
+    ';
     ?>
     <?php echo getMostPopularItem() ?>
     <form method="post">
@@ -104,8 +105,11 @@
             <div class="form-group col-md-6">
                 <h5>Estimated delivery time: <?php echo $deliveryTime ?> hours</h5>
                 <br/>
-                <h5>Want to have it faster (in 30min)? Add this option only for 2 &euro; </h5>
-                <input type="checkbox" id="deliveryTime" name="deliveryTime" class="form-control"/>
+                <div class="delivery-time">
+                    <h5>Want to have it faster (in 30min)? Add this option only for 2 &euro; </h5>
+                    <input type="checkbox" id="deliveryTime" name="deliveryTime" class="form-control"/>
+                </div>
+
             </div>
             <div></div>
         </div>
