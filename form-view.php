@@ -20,18 +20,21 @@
         ?>
 
     <?php // Navigation for when you need it ?>
-    <?php /*
-    <nav>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link active" href="?food=1">Order food</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="?food=0">Order drinks</a>
-            </li>
-        </ul>
-    </nav>
-    */ ?>
+    <?php echo ' 
+        <nav>
+            <ul class="nav">
+                 <li class="nav-item">
+                    <a class="nav-link  active" href="?order=drinks">Order drinks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?order=food">Order food</a>
+                </li>
+                
+            </ul>
+        </nav>
+    '
+
+    ?>
     <form method="post">
 
         <div class="form-row">
@@ -52,7 +55,7 @@
                            name="street"
                            id="street"
                            class="form-control"
-                           value="<?php echo $_POST['street'] ?? '' ?>"/>
+                           value="<?php echo $_SESSION['street'] ?? '' ?>"/>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
@@ -60,7 +63,7 @@
                            id="streetnumber"
                            name="streetnumber"
                            class="form-control"
-                           value="<?php echo $_POST['streetnumber'] ?? '' ?>"/>
+                           value="<?php echo  $_SESSION["streetnumber"] ?? '' ?>"/>
                 </div>
             </div>
             <div class="form-row">
@@ -70,7 +73,7 @@
                            id="city"
                            name="city"
                            class="form-control"
-                           value="<?php echo $_POST['city'] ?? '' ?>"/>
+                           value="<?php echo $_SESSION['city'] ?? '' ?>"/>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
@@ -78,14 +81,14 @@
                            id="zipcode"
                            name="zipcode"
                            class="form-control"
-                           value="<?php echo $_POST['zipcode'] ?? '' ?> "/>
+                           value="<?php echo $_SESSION['zipcode'] ?? '' ?> "/>
                 </div>
             </div>
         </fieldset>
 
         <fieldset>
             <legend>Products</legend>
-            <?php foreach ($products as $i => $product): ?>
+            <?php foreach (${$order} as $i => $product): ?>
                 <label>
                     <?php // <?p= is equal to <?php echo ?>
                     <input type="checkbox"
@@ -101,7 +104,10 @@
         <button type="submit" class="btn btn-primary">Order!</button>
     </form>
 
-    <footer>You already ordered <strong>&euro; <?php echo ($totalValue ?? 0.00) ?></strong> in food and drinks.</footer>
+    <footer>
+        You already ordered <strong>&euro; <?php echo number_format((totalValue(${$order}) ?? 0.00), 2) ?></strong> in food and drinks.
+
+    </footer>
 </div>
 
 <style>
