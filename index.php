@@ -11,18 +11,18 @@ session_start();
 
 if(!empty($_GET)){
     foreach ($_GET as $key=>$get){
-        if(!in_array($key, ['order'])){
+        if(!in_array($key, ['order'])){ //to send only allowed keys in $_GET
             unset($_GET[$key]);
         }
     }
 
-    if(!in_array($_GET['order'], ['food', 'drinks'])){
+    if(!in_array($_GET['order'], ['food', 'drinks'])){  //to send only allowed valeus in 'order'
         unset($_GET['order']);
     }
 }
 
 $order = $_GET['order'] ?? 'drinks';
-
+$deliveryTime = $_POST['deliveryTime'] ?? '2.5';
 // Use this function when you need to need an overview of these variables
 function whatIsHappening() {
     echo '<h2>$_GET</h2>';
@@ -38,9 +38,8 @@ function whatIsHappening() {
     echo '<h2>$_SESSION</h2>';
     var_dump($_SESSION);
 }
-whatIsHappening();
+//whatIsHappening();
 
-// TODO: provide some products (you may overwrite the example)
 $drinks = [
     ['name' => 'Fanta', 'price' => 2.5],
     ['name' => 'Coca Cola', 'price' => 2.5],
@@ -58,12 +57,16 @@ $food = [
     ['name' => 'Pear', 'price' => 4],
     ['name' => 'Lemon', 'price' => 6],
 ];
-//function totalValue ($productsList) use ($products){ to use var wicch are out of this function
-function totalValue ($productsList){
+
+function totalValue ($productsList, &$deliveryTime){
     $chosenProduct = $_POST['products'];
     $totalPrice = 0;
     foreach($chosenProduct as $productNumber => $product) {
         $totalPrice +=$productsList[$productNumber]['price'];
+    };
+    if ($_POST['deliveryTime'] != NULL){
+        $deliveryTime = 0.5;
+        $totalPrice += 2;
     };
     return $totalPrice;
 };
@@ -87,34 +90,51 @@ function validate(): array
         $_POST['streetnumber'] = '';
         array_push($errors, 'Street number field can not be empty and has to be a number');
     }
-    if (($_POST['zipcode'] == '')|| !(is_numeric(($_POST['zipcode'])))){
+    if (!(is_numeric(($_POST['zipcode'])))){
+        echo 'ZipCode START';
+        var_dump($_POST['zipcode']);
         $_POST['zipcode'] = '';
         array_push($errors, 'Zip code field can not be empty and has to be a number');
+        echo 'ZipCode END';
     }
     $_SESSION["street"] = $_POST['street'];
     $_SESSION["city"] = $_POST['city'];
-    $_SESSION["streetnumber"] = $_POST['streetnumber'];
     $_SESSION["zipcode"] = $_POST['zipcode'];
-    // This function will send a list of invalid fields back
+    $_SESSION["streetnumber"] = $_POST['streetnumber'];
+
     return $errors;
 }
 
-function handleForm($productsList): string
+function handleForm($productsList, &$deliveryTime): string
 {
-    // Validation (step 2)
     $invalidFields = validate();
     if (!empty($invalidFields)) {
         return '<div class="alert alert-danger">' . implode(" </br> ", $invalidFields) .'</div>';
     }
-    // TODO: form related tasks (step 1)
-
     $chosenProduct = $_POST['products'];
     $orderList = [];
-
     foreach($chosenProduct as $productNumber => $product) {
         $totalPrice +=$productsList[$productNumber]['price'];
         array_push($orderList, $productsList[$productNumber]['name']);
     }
+
+    if ($_POST['deliveryTime'] != NULL){
+        $deliveryTime = 0.5;
+        $totalPrice += 2;
+    };
+    if(!isset($_COOKIE['price']) && !isset($_COOKIE['orders'])){
+        setcookie("price",  strval($totalPrice), time() + (10 * 365 * 24 * 60 * 60), "/"); //  set a cookie that expires in ten years
+        setcookie("orders",  (implode(" ," , $orderList)), time() + (10 * 365 * 24 * 60 * 60), "/");
+    } else {
+        $newPrice = $_COOKIE['price'] . ',' . $totalPrice . ',';
+        setcookie("price", $newPrice, time() + (10 * 365 * 24 * 60 * 60), "/");
+
+        $newOrder = $_COOKIE['orders'] . ',' . (implode(",", $orderList));
+        setcookie("orders", $newOrder);
+
+    }
+
+
 
 
     return ' <div class="alert alert-success"> 
@@ -122,19 +142,40 @@ function handleForm($productsList): string
             .'</br>Your email is: ' .$_POST['email']
             .'</br> You have chosen: ' .implode(" , ", $orderList)
             .'</br> The total price is: &euro;' .number_format($totalPrice, 2)
+            .'</br>Estimated delivery time: ' .$deliveryTime .' hours'
             .'</div>';
 }
 
-// TODO: replace this if by an actual check
-function changeTheProducts($defineFood){
-    return $defineFood;
-}
 $confirmationMessage = "";
+
 if (!empty($_POST)) {
-    $confirmationMessage = handleForm(${$order});
+    $confirmationMessage = handleForm(${$order}, $deliveryTime);
 }
+//setcookie("price",  '', time() + (10 * 365 * 24 * 60 * 60), "/"); //  set a cookie that expires in ten years
+//setcookie("orders",  '', time() + (10 * 365 * 24 * 60 * 60), "/");
+
+function getMostPopularItem(){
+    if( !isset($_COOKIE['orders'])){
+        return;
+    };
+    $orderedItems = (explode(',', $_COOKIE['orders']));
+    $vals = array_count_values($orderedItems);
+
+    $mostPopularItem = '';
+    $highestRate = 0;
+    foreach ($vals as $key => $val){
+        if ($val > $highestRate){
+            $highestRate = $val;
+            $mostPopularItem = $key;
+        }
+    }
+
+    return '<h5> Most popular item, you have odered is: ' .$mostPopularItem . '.</h5>
+            </br>
+            <h5>You have ordered it: '. $highestRate .' times. </h5>';
 
 
+};
 require 'form-view.php';
 //test
 $arr = [];

@@ -24,7 +24,7 @@
         <nav>
             <ul class="nav">
                  <li class="nav-item">
-                    <a class="nav-link  active" href="?order=drinks">Order drinks</a>
+                    <a class="nav-link  active" href="index.php?order=drinks">Order drinks</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?order=food">Order food</a>
@@ -33,8 +33,8 @@
             </ul>
         </nav>
     '
-
     ?>
+    <?php echo getMostPopularItem() ?>
     <form method="post">
 
         <div class="form-row">
@@ -81,7 +81,7 @@
                            id="zipcode"
                            name="zipcode"
                            class="form-control"
-                           value="<?php echo $_SESSION['zipcode'] ?? '' ?> "/>
+                           value="<?php echo $_SESSION['zipcode'] ?? '' ?>"/>
                 </div>
             </div>
         </fieldset>
@@ -100,12 +100,23 @@
                 <br />
             <?php endforeach; ?>
         </fieldset>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <h5>Estimated delivery time: <?php echo $deliveryTime ?> hours</h5>
+                <br/>
+                <h5>Want to have it faster (in 30min)? Add this option only for 2 &euro; </h5>
+                <input type="checkbox" id="deliveryTime" name="deliveryTime" class="form-control"/>
+            </div>
+            <div></div>
+        </div>
+
+
 
         <button type="submit" class="btn btn-primary">Order!</button>
     </form>
 
     <footer>
-        You already ordered <strong>&euro; <?php echo number_format((totalValue(${$order}) ?? 0.00), 2) ?></strong> in food and drinks.
+        You already ordered <strong>&euro; <?php echo number_format((totalValue(${$order},$deliveryTime) ?? 0.00), 2) ?></strong> in food and drinks.
 
     </footer>
 </div>
