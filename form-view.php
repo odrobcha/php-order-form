@@ -103,10 +103,10 @@
         </fieldset>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <h5>Estimated delivery time: <?php echo $deliveryTime ?> hours</h5>
+                <h5>Estimated delivery date: <?php echo $deliveryTime ?></h5>
                 <br/>
                 <div class="delivery-time">
-                    <h5>Want to have it faster (in 30min)? Add this option only for 2 &euro; </h5>
+                    <h5>Want to have it faster (in 2 days)? Add this option only for 2 &euro; </h5>
                     <input type="checkbox" id="deliveryTime" name="deliveryTime" class="form-control"/>
                 </div>
 

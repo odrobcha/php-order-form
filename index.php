@@ -22,7 +22,8 @@ if(!empty($_GET)){
 }
 
 $order = $_GET['order'] ?? 'drinks';
-$deliveryTime = $_POST['deliveryTime'] ?? '2.5';
+$deliveryDate = date('m/d/Y h:i a', time()+ (7 * 24 * 60 * 60));
+$deliveryTime = $_POST['deliveryTime'] ?? date('d/m/Y h:i a', time()+ (7 * 24 * 60 * 60));
 
 // Use this function when you need to need an overview of these variables
 function whatIsHappening() {
@@ -66,7 +67,7 @@ function totalValue ($productsList, &$deliveryTime){
         $totalPrice +=$productsList[$productNumber]['price'];
     };
     if ($_POST['deliveryTime'] != NULL){
-        $deliveryTime = 0.5;
+        $deliveryTime = date('m/d/Y h:i a', time()+ (2 * 24 * 60 * 60));
         $totalPrice += 2;
     };
     return $totalPrice;
@@ -120,7 +121,8 @@ function handleForm($productsList, &$deliveryTime): string
     }
 
     if ($_POST['deliveryTime'] != NULL){
-        $deliveryTime = 0.5;
+
+        $deliveryTime = date('d/m/Y h:i a', time()+ (2 * 24 * 60 * 60));;
         $totalPrice += 2;
     };
     if(!isset($_COOKIE['price']) && !isset($_COOKIE['orders'])){
@@ -143,7 +145,7 @@ function handleForm($productsList, &$deliveryTime): string
             .'</br>Your email is: ' .$_POST['email']
             .'</br> You have chosen: ' .implode(" , ", $orderList)
             .'</br> The total price is: &euro;' .number_format($totalPrice, 2)
-            .'</br>Estimated delivery time: ' .$deliveryTime .' hours'
+            .'</br>Estimated delivery time: ' .$deliveryTime 
             .'</div>';
 }
 
@@ -178,13 +180,6 @@ function getMostPopularItem(){
 
 };
 
-function activePage($activePage){
-    global $order;
-    if ($activePage == $order){
-        return ' ' .$activePage;
-    }
-
-}
 require 'form-view.php';
 //test
 $arr = [];
