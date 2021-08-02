@@ -49,3 +49,57 @@ body{
     grid-template-rows: 100%;
     grid-auto-flow: row;
 }
+
+.justify-center{
+    text-align: center;
+}
+
+.btn-container{
+    display: grid;
+    justify-items: center;
+    padding-bottom: 20px;
+
+}
+
+.nav{
+    margin: 20px 0;
+}
+
+.delivery-time{
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: 550px 40px;
+    grid-auto-flow: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.delivery-time h5{
+    margin: 0;
+}
+
+#delivery-time{
+    width: 40px;
+}
+fieldset{
+    margin-bottom: 20px;
+}
+
+fieldset label{
+    font-size: 22px;
+    color: #403737;
+}
+.address label{
+    font-size: 18px;
+}
+
+fieldset legend{
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.popular-order{
+    color: #5b4f4f;
+}
+.btn, .nav-link{
+    font-size: 20px;
+}

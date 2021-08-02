@@ -16,7 +16,7 @@ if(!empty($_GET)){
         }
     }
 
-    if(!in_array($_GET['order'], ['food', 'drinks'])){  //to send only allowed valeus in 'order'
+    if(!in_array($_GET['order'], ['food', 'drinks'])){  //to send only allowed values in 'order'
         unset($_GET['order']);
     }
 }
@@ -78,27 +78,31 @@ function validate(): array
     $errors = [];
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         $_POST['email'] = '';
-        array_push($errors, 'Please, check your email address');
+        array_push($errors, 'Please, check your email address.');
     }
     if ($_POST['street'] == ''){
         $_POST['street'] = '';
-        array_push($errors, 'Street field can not be empty');
+        array_push($errors, 'Street field can not be empty.');
     }
     if ($_POST['city'] == ''){
         $_POST['city'] = '';
-        array_push($errors, 'City field can not be empty');
+        array_push($errors, 'City field can not be empty.');
     }
     if (($_POST['streetnumber'] == '') || !(is_numeric(($_POST['streetnumber'])))){
         $_POST['streetnumber'] = '';
-        array_push($errors, 'Street number field can not be empty and has to be a number');
+        array_push($errors, 'Street number field can not be empty and has to be a number.');
     }
     if (!(is_numeric(($_POST['zipcode'])))){
-        echo 'ZipCode START';
-        var_dump($_POST['zipcode']);
         $_POST['zipcode'] = '';
-        array_push($errors, 'Zip code field can not be empty and has to be a number');
-        echo 'ZipCode END';
+        array_push($errors, 'Zip code field can not be empty and has to be a number.');
+     }
+
+    if (count($_POST['products']) == 0){
+        array_push($errors, 'Please, chose at least one product.');
+    
     }
+    
+    var_dump(count($_POST['products']));
     $_SESSION["street"] = $_POST['street'];
     $_SESSION["city"] = $_POST['city'];
     $_SESSION["zipcode"] = $_POST['zipcode'];
@@ -154,7 +158,7 @@ $confirmationMessage = "";
 if (!empty($_POST)) {
     $confirmationMessage = handleForm(${$order}, $deliveryTime);
 }
-//setcookie("price",  '', time() + (10 * 365 * 24 * 60 * 60), "/"); //  set a cookie that expires in ten years
+//setcookie("price",  '', time() + (10 * 365 * 24 * 60 * 60), "/"); //  clean a coockies
 //setcookie("orders",  '', time() + (10 * 365 * 24 * 60 * 60), "/");
 
 function getMostPopularItem(){
@@ -163,19 +167,21 @@ function getMostPopularItem(){
     };
     $orderedItems = (explode(',', $_COOKIE['orders']));
     $vals = array_count_values($orderedItems);
+   // var_dump($vals);
 
     $mostPopularItem = '';
     $highestRate = 0;
     foreach ($vals as $key => $val){
+
         if ($val > $highestRate){
             $highestRate = $val;
             $mostPopularItem = $key;
+
         }
     }
 
-    return '<h5> Most popular item, you have odered is: ' .$mostPopularItem . '.</h5>
-            </br>
-            <h5>You have ordered it: '. $highestRate .' times. </h5>';
+    return '<h5 class="popular-order"> Most popular item, you have odered is: ' .$mostPopularItem . '.</h5>
+            <h5 class="popular-order">You have ordered it: '. $highestRate .' times. </h5>';
 
 
 };

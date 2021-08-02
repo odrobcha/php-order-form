@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Place your order</h1>
+    <h1 class="justify-center">Place your order</h1>
 
         <?php
            echo $confirmationMessage ?? '';
@@ -46,7 +46,7 @@
             <div></div>
         </div>
 
-        <fieldset>
+        <fieldset class="address">
             <legend>Address</legend>
 
             <div class="form-row">
@@ -104,19 +104,19 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <h5>Estimated delivery date: <?php echo $deliveryTime ?></h5>
-                <br/>
-                <div class="delivery-time">
-                    <h5>Want to have it faster (in 2 days)? Add this option only for 2 &euro; </h5>
-                    <input type="checkbox" id="deliveryTime" name="deliveryTime" class="form-control"/>
-                </div>
 
             </div>
-            <div></div>
+        </div>
+        <div class="delivery-time">
+            <h5>Want to have it faster (in 2 days)? Add this option only for 2 &euro; </h5>
+            <input type="checkbox" id="deliveryTime" name="deliveryTime" class="form-control"/>
         </div>
 
+        <div class="btn-container">
+            <button type="submit" class="btn btn-primary btn-centered">Order!</button>
+        </div>
 
-
-        <button type="submit" class="btn btn-primary">Order!</button>
+        
     </form>
 
     <footer>
