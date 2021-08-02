@@ -49,6 +49,7 @@ $drinks = [
     ['name' => 'Coffee', 'price' => 3.5],
     ['name' => 'Iced Coffee', 'price' => 4],
     ['name' => 'Irish Coffee', 'price' => 6],
+    ['name' => 'Water', 'price' => 3],
 ];
 
 $food = [
@@ -58,6 +59,7 @@ $food = [
     ['name' => 'Black Berries', 'price' => 3.5],
     ['name' => 'Pear', 'price' => 4],
     ['name' => 'Lemon', 'price' => 6],
+    ['name' => 'Peach', 'price' => 2],
 ];
 
 function totalValue ($productsList, &$deliveryTime){
@@ -99,7 +101,6 @@ function validate(): array
 
     if (count($_POST['products']) == 0){
         array_push($errors, 'Please, chose at least one product.');
-    
     }
     
     var_dump(count($_POST['products']));
@@ -125,10 +126,10 @@ function handleForm($productsList, &$deliveryTime): string
     }
 
     if ($_POST['deliveryTime'] != NULL){
-
         $deliveryTime = date('d/m/Y h:i a', time()+ (2 * 24 * 60 * 60));;
         $totalPrice += 2;
     };
+
     if(!isset($_COOKIE['price']) && !isset($_COOKIE['orders'])){
         setcookie("price",  strval($totalPrice), time() + (10 * 365 * 24 * 60 * 60), "/"); //  set a cookie that expires in ten years
         setcookie("orders",  (implode(" ," , $orderList)), time() + (10 * 365 * 24 * 60 * 60), "/");
@@ -140,10 +141,6 @@ function handleForm($productsList, &$deliveryTime): string
         setcookie("orders", $newOrder);
 
     }
-
-
-
-
     return ' <div class="alert alert-success"> 
             Your order is sumbited </br> Your address is: ' .$_POST['street'] . ' ' .$_POST['streetnumber'] . ' ' . ' ' .$_POST['city']
             .'</br>Your email is: ' .$_POST['email']
@@ -166,8 +163,7 @@ function getMostPopularItem(){
         return;
     };
     $orderedItems = (explode(',', $_COOKIE['orders']));
-    $vals = array_count_values($orderedItems);
-   // var_dump($vals);
+    $vals = array_count_values($orderedItems); //Counts all the (same) values of an array
 
     $mostPopularItem = '';
     $highestRate = 0;
@@ -181,7 +177,7 @@ function getMostPopularItem(){
     }
 
     return '<h5 class="popular-order"> Most popular item, you have odered is: ' .$mostPopularItem . '.</h5>
-            <h5 class="popular-order">You have ordered it: '. $highestRate .' times. </h5>';
+            <h5 class="popular-order">You have ordered it '. $highestRate .' times. </h5>';
 
 
 };
